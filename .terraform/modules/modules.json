@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"dns","Source":"./modules/dns","Dir":"modules/dns"},{"Key":"gke","Source":"./modules/gke","Dir":"modules/gke"},{"Key":"subnets","Source":"./modules/global/subnets","Dir":"modules/global/subnets"},{"Key":"vpc","Source":"./modules/global/vpc","Dir":"modules/global/vpc"}]}
