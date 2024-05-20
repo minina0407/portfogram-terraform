@@ -1,9 +1,0 @@
-project_id   = "portfogram-k8s"
-region       = "asia-northeast3"
-vpc_name     = "dev-vpc"
-subnet_name  = "dev-subnet"
-subnet_cidr  = "10.0.1.0/24"
-cluster_name = "dev-cluster"
-machine_type = "e2-medium"
-node_count   = 1
-image_type   = "UBUNTU_CONTAINERD"
