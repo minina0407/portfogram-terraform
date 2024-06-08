@@ -63,7 +63,6 @@ jobs:
         #  plan은 terraorm.tfvars 파일을 참조하여 실행
         run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan
 
-
       - name: Create GitHub Comment
         id: create_comment
         uses: actions/github-script@v3
@@ -85,3 +84,10 @@ jobs:
             Pusher: @${pusher}, Action: ${action}
             `;
             const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number,
+              body: commentBody
+            });
