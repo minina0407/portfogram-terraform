@@ -68,12 +68,12 @@ jobs:
         id: create_comment
         uses: actions/github-script@v3
         with:
-          github-token: ${{ secrets.PAT_TOKEN }}  # 여기서 PAT_TOKEN을 사용
+          github-token: ${{ secrets.PAT_TOKEN }}
           script: |
-            const fmtStatus = ${{ steps.fmt.outcome }} === 'success' ? '📝 success' : '❌ failure';
-            const initStatus = ${{ steps.init.outcome }} === 'success' ? '🔅 success' : '❌ failure';
-            const planStatus = ${{ steps.plan.outcome }} === 'success' ? '📋 success' : '❌ failure';
-            const validateStatus = ${{ steps.validate.outcome }} === 'success' ? '🌐 success' : '❌ failure';
+            const fmtStatus = '${{ steps.fmt.outcome }}' === 'success' ? '📝 success' : '❌ failure';
+            const initStatus = '${{ steps.init.outcome }}' === 'success' ? '🔅 success' : '❌ failure';
+            const planStatus = '${{ steps.plan.outcome }}' === 'success' ? '📋 success' : '❌ failure';
+            const validateStatus = '${{ steps.validate.outcome }}' === 'success' ? '🌐 success' : '❌ failure';
             const pusher = context.actor;
             const action = context.eventName;
             const commentBody = `
