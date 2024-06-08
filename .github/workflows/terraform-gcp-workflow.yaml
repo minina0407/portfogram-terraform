@@ -85,8 +85,3 @@ jobs:
             Pusher: @${pusher}, Action: ${action}
             `;
             const { owner, repo } = context.repo;
-            github.rest.issues.createComment({
-              owner,
-              repo,
-              body: commentBody
-            });
