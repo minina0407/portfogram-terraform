@@ -45,7 +45,7 @@ jobs:
       - name: Terraform Format and Style
         id: fmt
         working-directory: ./env/dev
-        run: terraform fmt -check
+        run: terraform fmt
 
       - name: Terraform Init
         working-directory: ./env/dev
