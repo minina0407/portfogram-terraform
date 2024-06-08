@@ -4,6 +4,7 @@ provider "google" {
 }
 
 
+
 module "network" {
   source              = "../../modules/network"
   project_id          = var.project_id
@@ -24,4 +25,5 @@ module "gke" {
   subnetwork         = module.network.public_subnet_self_link
   image_type         = var.image_type
   node_count         = var.node_count
+  node_locations =var.node_location
 }
