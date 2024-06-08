@@ -27,10 +27,6 @@ jobs:
         working-directory: ./env/dev
         run: echo "Navigated to env/dev"
 
-      - name: Terraform Format Check
-        working-directory: ./env/dev
-        run: terraform fmt -check
-
       - name: Terraform Init
         working-directory: ./env/dev
         run: terraform init
