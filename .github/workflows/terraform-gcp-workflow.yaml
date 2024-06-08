@@ -63,11 +63,24 @@ jobs:
         #  plan은 terraorm.tfvars 파일을 참조하여 실행
         run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan
 
-      # Terraform plan 결과 출력
-      - name: Show Plan
+
+      # `plan.tfplan` 파일의 내용을 확인
+      - name: Display plan.tfplan
         if: steps.plan.outcome == 'success'
         working-directory: ./env/dev
-        run: terraform show -json plan.tfplan | jq .
+        run: cat plan.tfplan
+
+      # Terraform plan 결과를 파일로 저장
+      - name: Show Plan to file
+        if: steps.plan.outcome == 'success'
+        working-directory: ./env/dev
+        run: terraform show -json plan.tfplan > plan.json
+
+      # JSON 형식으로 저장된 plan 내용을 출력
+      - name: Display Plan JSON
+        if: steps.plan.outcome == 'success'
+        working-directory: ./env/dev
+        run: cat plan.json | jq .
 
       - name: Create GitHub Comment
         id: create_comment
