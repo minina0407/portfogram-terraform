@@ -22,6 +22,15 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.0
+      - name: Set up Google Cloud credentials
+        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > $HOME/gcloud-key.json
+
+      - name: Authenticate to Google Cloud
+        run: gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+
+      - name: Configure Google Cloud application default credentials
+        run: gcloud auth application-default login --brief --key-file=$HOME/gcloud-key.json
+
 
       - name: Navigate to dev environment
         working-directory: ./env/dev
@@ -39,3 +48,5 @@ jobs:
         working-directory: ./env/dev
         #  plan은 terraorm.tfvars 파일을 참조하여 실행
         run: terraform plan -var-file=terraform.tfvars
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/gcloud-key.json
