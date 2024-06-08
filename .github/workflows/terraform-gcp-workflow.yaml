@@ -24,7 +24,7 @@ jobs:
           terraform_version: 1.0.0
 
       - name: Navigate to dev environment
-        run: cd env/dev
+        run: cd ./env/dev
 
       - name: Terraform Format Check
         run: terraform fmt -check
