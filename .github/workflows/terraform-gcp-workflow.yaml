@@ -36,4 +36,6 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var-file=./env/dev/terraform.tfvars
+        working-directory: ./env/dev
+        run: terraform plan  -var-file="terraform.tfvars"
+
