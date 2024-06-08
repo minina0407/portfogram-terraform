@@ -64,23 +64,6 @@ jobs:
         run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan
 
 
-      # `plan.tfplan` 파일의 내용을 확인
-      - name: Display plan.tfplan
-        if: steps.plan.outcome == 'success'
-        working-directory: ./env/dev
-        run: cat plan.tfplan
-
-      # Terraform plan 결과를 파일로 저장
-      - name: Show Plan to file
-        if: steps.plan.outcome == 'success'
-        working-directory: ./env/dev
-        run: terraform show -json plan.tfplan > plan.json
-
-      # JSON 형식으로 저장된 plan 내용을 출력
-      - name: Display Plan JSON
-        if: steps.plan.outcome == 'success'
-        working-directory: ./env/dev
-        run: cat plan.json | jq .
 
       - name: Create GitHub Comment
         id: create_comment
@@ -88,25 +71,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fmtStatus = ${{ steps.fmt.outcome }} === 'success' ? '📝 success' : '❌ failure';
-            const initStatus = ${{ steps.init.outcome }} === 'success' ? '🔅 success' : '❌ failure';
-            const planStatus = ${{ steps.plan.outcome }} === 'success' ? '📋 success' : '❌ failure';
-            const validateStatus = ${{ steps.validate.outcome }} === 'success' ? '🌐 success' : '❌ failure';
-            const pusher = context.actor;
-            const action = context.eventName;
-            const commentBody = `
-            **ffm-prd-svc-harbor**
-            - Terraform Format and Style 📝 ${fmtStatus}
-            - Terraform Initialization 🔅 ${initStatus}
-            - Terraform Plan 📋 ${planStatus}
-            - Terraform Validation 🌐 ${validateStatus}
-            Pusher: @${pusher}, Action: ${action}
-            `;
-            const { owner, repo } = context.repo;
-            const issue_number = context.issue.number;
-            github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number,
-              body: commentBody
-            });
+            const { data } = await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Terraform Plan created successfully.'
+            })
