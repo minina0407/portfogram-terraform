@@ -64,16 +64,31 @@ jobs:
         run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan
 
 
-
       - name: Create GitHub Comment
         id: create_comment
         uses: actions/github-script@v3
         with:
-          github-token: ${{ secrets.PAT_TOKEN }}
+          github-token: ${{ secrets.PAT_TOKEN }}  # 여기서 PAT_TOKEN을 사용
           script: |
-            const { data } = await github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Terraform Plan created successfully.'
-            })
+            const fmtStatus = ${{ steps.fmt.outcome }} === 'success' ? '📝 success' : '❌ failure';
+            const initStatus = ${{ steps.init.outcome }} === 'success' ? '🔅 success' : '❌ failure';
+            const planStatus = ${{ steps.plan.outcome }} === 'success' ? '📋 success' : '❌ failure';
+            const validateStatus = ${{ steps.validate.outcome }} === 'success' ? '🌐 success' : '❌ failure';
+            const pusher = context.actor;
+            const action = context.eventName;
+            const commentBody = `
+            **ffm-prd-svc-harbor**
+            - Terraform Format and Style 📝 ${fmtStatus}
+            - Terraform Initialization 🔅 ${initStatus}
+            - Terraform Plan 📋 ${planStatus}
+            - Terraform Validation 🌐 ${validateStatus}
+            Pusher: @${pusher}, Action: ${action}
+            `;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number,
+              body: commentBody
+            });
