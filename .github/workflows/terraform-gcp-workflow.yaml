@@ -22,8 +22,11 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.0
-      - name: Set up Google Cloud credentials
-        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > $HOME/gcloud-key.json
+
+      - name: Save Google Cloud credentials
+        run: |
+          echo "${{ secrets.GOOGLE_CREDENTIALS }}" | jq '.' > $HOME/gcloud-key.json
+        shell: bash
 
       - name: Authenticate to Google Cloud
         run: gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
