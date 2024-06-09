@@ -50,18 +50,18 @@ jobs:
       - name: Terraform Init
         id: init
         working-directory: ./env/dev
-        run: terraform init
+        run: terraform init  -no-color
 
       - name: Terraform Validate
         id: validate
         working-directory: ./env/dev
-        run: terraform validate
+        run: terraform validate  -no-color
 
       - name: Terraform Plan
         id: plan
         working-directory: ./env/dev
         #  plan은 terraorm.tfvars 파일을 참조하여 실행
-        run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan
+        run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan  -no-color
 
 
       - name: Create GitHub Comment
