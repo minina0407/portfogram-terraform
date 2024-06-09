@@ -86,10 +86,10 @@ jobs:
               `;
               const { owner, repo } = context.repo;
               const issue_number = context.issue.number;
-              const octokit = github.getOctokit('${{ secrets.PAT_TOKEN }}');
-              await octokit.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number,
-                body: commentBody
-              });
+           
+              github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+              })
