@@ -18,18 +18,7 @@ crash.log
 # .idea 디렉토리 (IntelliJ IDEA 프로젝트 파일)
 .idea/
 
-# 로컬 설정 파일
-terraform.tfvars
-terraform.tfvars.json
-**/terraform.tfvars
-**/terraform.tfvars.json
 
 # SSH 키 파일
 *.pem
 *.key
-
-
-
-# 환경 구성 파일 (각 환경 디렉토리 내)
-env/dev/terraform.tfvars
-env/prod/terraform.tfvars

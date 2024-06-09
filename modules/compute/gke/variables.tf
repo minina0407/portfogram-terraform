@@ -42,3 +42,8 @@ variable "node_count" {
   description = "Number of nodes in the GKE cluster"
   type        = number
 }
+variable "node_locations" {
+  description = "The locations (zones) where the cluster nodes will be created."
+  type        = list(string)
+
+}
