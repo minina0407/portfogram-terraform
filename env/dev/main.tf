@@ -25,3 +25,9 @@ module "gke" {
   node_count         = var.node_count
   node_locations =var.node_location
 }
+
+module "iam" {
+  source      = "../../modules/iam"
+  project_id  = var.project_id
+  name_prefix = "dev-portfogram"
+}
