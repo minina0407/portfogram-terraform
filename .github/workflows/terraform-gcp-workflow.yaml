@@ -46,7 +46,6 @@ jobs:
         id: fmt
         working-directory: ./env/dev
         run: terraform fmt
-        continue-on-error: true
 
       - name: Terraform Init
         id: init
@@ -62,7 +61,7 @@ jobs:
         id: plan
         working-directory: ./env/dev
         #  plan은 terraorm.tfvars 파일을 참조하여 실행
-        run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan  -no-color
+        run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan -no-color
 
 
       - name: Create GitHub Comment
@@ -71,29 +70,32 @@ jobs:
         with:
             github-token: ${{ secrets.PAT_TOKEN }}
             script: |
-                const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outputs.stdout }}\`
-                #### Terraform Initialization ⚙️\`${{ steps.init.outputs.stdout }}\`
-                details> <summary>Validation Output</summary>
-              
-                \`\`\`\n
+                const output = `
+                #### Terraform Format and Style 🖌 \`${{ steps.fmt.outputs.stdout }}\`
+                #### Terraform Initialization ⚙️ \`${{ steps.init.outputs.stdout }}\`
+                #### Terraform Validation 🧪 \`${{ steps.validate.outputs.stdout }}\`
+                <details><summary>Validation Output</summary>
+                
+                \`\`\`
                 ${{ steps.validate.outputs.stdout }}
                 \`\`\`
-              
-                 </details>
-                #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-                
-                <details><summary>Show Plan</summary>
-                \`\`\`\n
-                ${process.env.PLAN}
-                \`\`\`
-                
                 </details>
+                #### Terraform Plan 📖  \`${{ steps.plan.outputs.stdout }}\`
               
+                <details><summary>Show Plan</summary>
+                \`\`\`
+                ${{ steps.plan.outputs.stdout }}
+                \`\`\`
+              
+                </details>
+                 
                 *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
-              
                 github.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: output
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body: output
                 })
+              
+              
+                
