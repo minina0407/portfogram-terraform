@@ -46,6 +46,7 @@ jobs:
         id: fmt
         working-directory: ./env/dev
         run: terraform fmt
+        continue-on-error: true
 
       - name: Terraform Init
         id: init
@@ -72,10 +73,27 @@ jobs:
             script: |
                 const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outputs.stdout }}\`
                 #### Terraform Initialization ⚙️\`${{ steps.init.outputs.stdout }}\`
-                #### Terraform Plan 📖\`${{ steps.plan.outputs.stdout }}\``;
+                details> <summary>Validation Output</summary>
+              
+                \`\`\`\n
+                ${{ steps.validate.outputs.stdout }}
+                \`\`\`
+              
+                 </details>
+                #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+                
+                <details><summary>Show Plan</summary>
+                          \`\`\`\n
+                ${process.env.PLAN}
+                \`\`\`
+                
+                </details>
+              
+                *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+              
                 github.issues.createComment({
                   issue_number: context.issue.number,
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  body: `## Terraform checks in directory '${{ matrix.directory }}'\n` + output
+                  body: output
                 })
