@@ -38,3 +38,4 @@ variable "node_location" {
   description = "The locations (zones) where the cluster nodes will be created."
   type        =  list(string)
 }
+
