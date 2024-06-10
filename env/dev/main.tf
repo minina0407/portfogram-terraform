@@ -2,6 +2,11 @@ provider "google" {
   project = var.project_id
   region  = var.region
 }
+terraform {
+backend "gcs" {
+  bucket = "portfogram_tfstate_dev"
+}
+}
 
 module "network" {
   source              = "../../modules/network"
@@ -24,4 +29,13 @@ module "gke" {
   image_type         = var.image_type
   node_count         = var.node_count
   node_locations =var.node_location
+}
+
+module "iam" {
+  source      = "../../modules/iam"
+  project_id  = var.project_id
+  name_prefix = "dev-portfogram"
+}
+module "storage" {
+  source = "../../modules/storage"
 }

@@ -11,3 +11,4 @@ node_machine_type = "e2-medium"
 image_type = "UBUNTU_CONTAINERD"
 
 node_location       = ["asia-northeast3-a", "asia-northeast3-b"]
+

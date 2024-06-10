@@ -62,7 +62,7 @@ jobs:
         id: plan
         working-directory: ./env/dev
         #  plan은 terraorm.tfvars 파일을 참조하여 실행
-        run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan -no-color
+        run: terraform plan -var-file=terraform.tfvars -out=plan.tfplan -no-color -lock=false
 
 
       - name: Create GitHub Comment
@@ -103,3 +103,10 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
+
+      - name: Terraform Apply
+        # main으로 병합시 apply
+        if: github.ref == 'refs/heads/main'
+        working-directory: ./env/dev
+        run: terraform apply -auto-approve -no-color plan.tfplan -lock=false
+
