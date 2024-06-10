@@ -103,10 +103,10 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-      
-            - name: Terraform Apply
-            # main으로 병합시 apply
-            if: github.ref == 'refs/heads/main'
-            working-directory: ./env/dev
-            run: terraform apply -auto-approve -no-color plan.tfplan  
-          
+
+      - name: Terraform Apply
+        # main으로 병합시 apply
+        if: github.ref == 'refs/heads/main'
+        working-directory: ./env/dev
+        run: terraform apply -auto-approve -no-color plan.tfplan -lock=false
+
